@@ -9,7 +9,7 @@ class Category(models.Model):
     
 class Herb(models.Model):
     name = models.CharField(max_length=100)
-    image_url = models.URLField()
+    image_url = models.CharField(max_length=255)
     uses = models.CharField()
     preparation = models.TextField()
     warnings = models.TextField(blank=True, null=True)
