@@ -3,14 +3,22 @@ from .models import Category, Herb
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = '__all__'  # Note: use double underscores not 'all'
 
 class HerbSerializer(serializers.ModelSerializer):
-    categories = serializers.PrimaryKeyRelatedField(
+    category = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Category.objects.all(),
         allow_empty=True,
-        required=False)
+        required=False
+    )
+
     class Meta:
         model = Herb
         fields = '__all__'
+#https://stackoverflow.com/questions/31820389/can-to-representation-in-django-rest-framework-access-the-normal-fields
+#https://www.django-rest-framework.org/api-guide/relations/#nested-relationships
+    def to_representation(self, instance):
+        represent = super().to_representation(instance)
+        represent['category'] = CategorySerializer(instance.category.all(), many=True).data
+        return represent
