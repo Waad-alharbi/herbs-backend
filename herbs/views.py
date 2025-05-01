@@ -25,3 +25,10 @@ class HerbDetailView(APIView):
         herb = self.get_object(pk)
         serializer = HerbSerializer(herb)
         return Response(serializer.data)
+    
+    def delete(self, request, pk):
+        herb = self.get_object(pk)
+        herb.delete()
+        return Response(status=204)
+    
+ 
