@@ -59,3 +59,15 @@ class HealthTrackerListCreateView(APIView):
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
     
+class HealthlogDetailView(APIView):
+    def get_object(self, pk):
+        return get_object_or_404(HealthTracker, pk=pk)
+    
+    def get(self, request, pk):
+        log = self.get_object(pk)
+        serializer = HealthTrackerSerializer(log)
+        return Response(serializer.data)
+    
+    
+
+    
