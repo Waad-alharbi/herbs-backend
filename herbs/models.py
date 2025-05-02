@@ -17,3 +17,24 @@ class Herb(models.Model):
 
     def str(self):
         return self.name
+    
+
+from django.db import models
+
+EFFECTIVENESS_CHOICES = [
+    ('very_ineffective', 'Very ineffective'),
+    ('ineffective', 'Ineffective'),
+    ('neutral', 'Neutral'),
+    ('effective', 'Effective'),
+    ('very_effective', 'Very effective'),
+]
+
+class HealthTracker(models.Model):
+    name = models.CharField(max_length=100)
+    perceived_effectiveness = models.CharField(max_length=30, choices=EFFECTIVENESS_CHOICES)
+    side_effects = models.TextField(blank=True) 
+    comment = models.TextField(blank=True)
+    date = models.DateTimeField()
+
+    def __str__(self):
+        return f'{self.name} - {self.date}'
