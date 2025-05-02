@@ -45,3 +45,10 @@ class HerbDetailView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
+
+class HealthTrackerListCreateView(APIView):
+    def get(self, request):
+        logs = He.objects.all().order_by('-date')
+        serializer = HealthLogSerializer(logs, many=True)
+        return Response(serializer.data)
+    

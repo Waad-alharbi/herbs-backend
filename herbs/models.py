@@ -19,7 +19,7 @@ class Herb(models.Model):
         return self.name
     
 
-from django.db import models
+
 
 EFFECTIVENESS_CHOICES = [
     ('very_ineffective', 'Very ineffective'),

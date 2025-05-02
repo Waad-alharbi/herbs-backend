@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Category, Herb
+from .models import Category, Herb, HealthTracker
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'  # Note: use double underscores not 'all'
+        fields = '__all__'  
 
 class HerbSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(
@@ -22,3 +22,8 @@ class HerbSerializer(serializers.ModelSerializer):
         represent = super().to_representation(instance)
         represent['category'] = CategorySerializer(instance.category.all(), many=True).data
         return represent
+    
+class HealthTrackerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= HealthTracker
+        fields = '__all__'
