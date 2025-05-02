@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Herb, Category
-from .serializers import HerbSerializer, CategorySerializer
+from .models import Herb, Category, HealthTracker
+from .serializers import HerbSerializer, CategorySerializer, HealthTrackerSerializer
 from rest_framework import generics
 # Create your views here.
 
@@ -48,7 +48,7 @@ class HerbDetailView(APIView):
 
 class HealthTrackerListCreateView(APIView):
     def get(self, request):
-        logs = He.objects.all().order_by('-date')
-        serializer = HealthLogSerializer(logs, many=True)
+        logs = HealthTracker.objects.all()
+        serializer = HealthTrackerSerializer(logs, many=True)
         return Response(serializer.data)
     
