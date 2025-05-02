@@ -73,6 +73,14 @@ class HealthlogDetailView(APIView):
         log.delete()
         return Response(status=204)
     
+    def patch(self, request, pk):
+        log = self.get_object(pk)
+        serializer = HealthTrackerSerializer(log, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+    
     
 
     
