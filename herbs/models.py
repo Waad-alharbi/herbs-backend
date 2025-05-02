@@ -9,8 +9,8 @@ class Category(models.Model):
     
 class Herb(models.Model):
     name = models.CharField(max_length=100)
-    image_url = models.CharField(max_length=255)
-    uses = models.CharField()
+    image_url = models.URLField(max_length=255)
+    uses = models.CharField(max_length=255) 
     preparation = models.TextField()
     warnings = models.TextField(blank=True, null=True)
     category = models.ManyToManyField(Category)

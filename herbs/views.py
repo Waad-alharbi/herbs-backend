@@ -1,9 +1,16 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Herb
-from .serializers import HerbSerializer
+from .models import Herb, Category
+from .serializers import HerbSerializer, CategorySerializer
+from rest_framework import generics
 # Create your views here.
+
+#https://www.django-rest-framework.org/api-guide/generic-views/
+class CategoryListAPIView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
 class  HerbListCreateView(APIView):
     def get(self, request):
         herbs = Herb.objects.all() 

@@ -15,7 +15,7 @@ class HerbSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Herb
-        fields = '__all__'
+        fields = ['id', 'name', 'uses', 'preparation', 'warnings', 'image_url', 'category']
 #https://stackoverflow.com/questions/31820389/can-to-representation-in-django-rest-framework-access-the-normal-fields
 #https://www.django-rest-framework.org/api-guide/relations/#nested-relationships
     def to_representation(self, instance):
