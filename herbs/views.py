@@ -11,6 +11,10 @@ class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+class HerbListAPIView(generics.ListAPIView):
+    queryset = Herb.objects.all()
+    serializer_class = HerbSerializer
+
 class  HerbListCreateView(APIView):
     def get(self, request):
         herbs = Herb.objects.all() 

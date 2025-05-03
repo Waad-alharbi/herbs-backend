@@ -9,13 +9,13 @@ class Category(models.Model):
     
 class Herb(models.Model):
     name = models.CharField(max_length=100)
-    image_url = models.URLField(max_length=255)
+    image_url = models.CharField(max_length=255)
     uses = models.CharField(max_length=255) 
     preparation = models.TextField()
     warnings = models.TextField(blank=True, null=True)
     category = models.ManyToManyField(Category)
 
-    def str(self):
+    def __str__(self):
         return self.name
     
 
@@ -30,11 +30,12 @@ EFFECTIVENESS_CHOICES = [
 ]
 
 class HealthTracker(models.Model):
-    name = models.CharField(max_length=100)
+    herb = models.ForeignKey(Herb, on_delete=models.CASCADE)
+    herb_name = models.CharField(max_length=100)
     perceived_effectiveness = models.CharField(max_length=30, choices=EFFECTIVENESS_CHOICES)
     side_effects = models.TextField(blank=True) 
     comment = models.TextField(blank=True)
-    date = models.DateTimeField()
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.name} - {self.date}'
+        return f'{self.herb_name} - {self.date}'

@@ -24,6 +24,7 @@ class HerbSerializer(serializers.ModelSerializer):
         return represent
     
 class HealthTrackerSerializer(serializers.ModelSerializer):
+    herb_name = serializers.CharField(source='herb.name', read_only=True)
     class Meta:
-        model= HealthTracker
-        fields = '__all__'
+        model = HealthTracker
+        fields = ['id', 'herb', 'herb_name','perceived_effectiveness', 'side_effects', 'comment', 'date']
