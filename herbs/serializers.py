@@ -28,3 +28,7 @@ class HealthTrackerSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthTracker
         fields = ['id', 'herb', 'herb_name','perceived_effectiveness', 'side_effects', 'comment', 'date']
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user 
+        return HealthTracker.objects.create(validated_data)
