@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.core.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
+from .permissions import IsOwnerOrReadOnly
 # Create your views here.
 
 #https://www.django-rest-framework.org/api-guide/generic-views/
@@ -21,6 +22,7 @@ class HerbListAPIView(generics.ListAPIView):
     serializer_class = HerbSerializer
 
 class  HerbListCreateView(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         herbs = Herb.objects.all() 
         serializer = HerbSerializer(herbs, many=True) 
@@ -36,6 +38,7 @@ class  HerbListCreateView(APIView):
         return Response(serializer.errors, status=400)
     
 class HerbDetailView(APIView):
+    permission_classes = [AllowAny]
     def get_object(self, pk):
         return get_object_or_404(Herb, pk=pk)
     
@@ -62,7 +65,7 @@ class HerbDetailView(APIView):
         return Response(serializer.errors, status=400)
 
 class HealthTrackerListCreateView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         logs = HealthTracker.objects.filter(user=request.user)
         serializer = HealthTrackerSerializer(logs, many=True)
@@ -71,14 +74,14 @@ class HealthTrackerListCreateView(APIView):
     def post(self, request):
         data = request.data.copy()
         data['user'] = request.user.id
-        serializer = HealthTrackerSerializer(data=data)
+        serializer = HealthTrackerSerializer(data=data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
     
 class HealthlogDetailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     def get_object(self, pk):
         return get_object_or_404(HealthTracker, pk=pk)
     

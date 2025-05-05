@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from .models import Category, Herb, HealthTracker
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'  
+        fields = '__all__'
 
 class HerbSerializer(serializers.ModelSerializer):
     category = serializers.PrimaryKeyRelatedField(
@@ -22,13 +23,17 @@ class HerbSerializer(serializers.ModelSerializer):
         represent = super().to_representation(instance)
         represent['category'] = CategorySerializer(instance.category.all(), many=True).data
         return represent
-    
+
 class HealthTrackerSerializer(serializers.ModelSerializer):
     herb_name = serializers.CharField(source='herb.name', read_only=True)
+#https://stackoverflow.com/questions/51940976/django-rest-framework-currentuserdefault-with-serializer
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = HealthTracker
-        fields = ['id', 'herb', 'herb_name','perceived_effectiveness', 'side_effects', 'comment', 'date']
+        fields = ['id', 'user', 'herb', 'herb_name', 'perceived_effectiveness', 'side_effects', 'comment', 'date']
 
     def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user 
-        return HealthTracker.objects.create(validated_data)
+        return HealthTracker.objects.create(**validated_data)
+
+    
