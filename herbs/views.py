@@ -115,6 +115,16 @@ class SignUpView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
 
+        if not username or not email or not password:
+            return Response({'error': 'All fields are required'}, status=400)
+
+        if User.objects.filter(username=username).exists():
+            return Response({'error': 'Username already exists'}, status=400)
+
+        if User.objects.filter(email=email).exists():
+            return Response({'error': 'Email already exists'}, status=400)
+
+
         try:
             validate_password(password)
         except ValidationError as err:
