@@ -10,6 +10,9 @@ from django.core.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from .permissions import IsOwnerOrReadOnly
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomTokenObtainPairSerializer
+
 # Create your views here.
 
 #https://www.django-rest-framework.org/api-guide/generic-views/
@@ -65,7 +68,7 @@ class HerbDetailView(APIView):
         return Response(serializer.errors, status=400)
 
 class HealthTrackerListCreateView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     def get(self, request):
         logs = HealthTracker.objects.filter(user=request.user)
         serializer = HealthTrackerSerializer(logs, many=True)
@@ -81,9 +84,9 @@ class HealthTrackerListCreateView(APIView):
         return Response(serializer.errors, status=400)
     
 class HealthlogDetailView(APIView):
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
-    def get_object(self, pk):
-        return get_object_or_404(HealthTracker, pk=pk)
+    permission_classes = [permissions.IsAuthenticated]
+    def get_object(self, pk, user):
+        return get_object_or_404(HealthTracker, pk=pk, user=user)
     
     def get(self, request, pk):
         log = self.get_object(pk, request.user)
@@ -132,4 +135,5 @@ class SignUpView(APIView):
         )
     
 
-    
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

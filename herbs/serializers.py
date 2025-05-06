@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Category, Herb, HealthTracker
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -32,8 +32,17 @@ class HealthTrackerSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthTracker
         fields = ['id', 'user', 'herb', 'herb_name', 'perceived_effectiveness', 'side_effects', 'comment', 'date']
+        read_only_fields = ['user']
 
-    def create(self, validated_data):
-        return HealthTracker.objects.create(**validated_data)
 
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['username'] = user.username
+        token['is_staff'] = user.is_staff
+
+        return token
     

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
 class Category(models.Model):
@@ -15,6 +16,7 @@ class Herb(models.Model):
     preparation = models.TextField()
     warnings = models.TextField(blank=True, null=True)
     category = models.ManyToManyField(Category)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
