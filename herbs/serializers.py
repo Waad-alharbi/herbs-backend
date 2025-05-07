@@ -43,6 +43,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['username'] = user.username
         token['is_staff'] = user.is_staff
-
         return token
     
+#https://stackoverflow.com/questions/65863778/how-can-i-use-simple-jwt-for-custom-user-model
