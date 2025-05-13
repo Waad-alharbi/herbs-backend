@@ -11,9 +11,20 @@ Backend:
 - Json Web Token (JWT) for Authentication
 - Django-cors-headers
 
+Fronend:
+- React.js
+- Bulma
+- JSX
+- CSS
+- React Router
+- State management (using React hook)
+
+## Frontend Repository
+[Go to Frontend Repository](https://github.com/Waad-alharbi/herbs-frontend)
+
 ## Code Installation
 1 - Clone the repository
-- `git clone https://git.generalassemb.ly/waad-alharbi/django-herbs-project.git`
+- `git clone https://github.com/Waad-alharbi/herbs-frontend.git`
 
 2 - Navigate into the folder
 - `cd herbs_backend`
@@ -51,5 +62,7 @@ In Visual Studio Code Terminal:
 Due to time constraints, some features were not implemented which include: 
 
 - Implementing search functionality for herbs by filtering the catagories to enhance user experience.
+- Allowing users to save favorite herbs to explore later.
+- Improving readability and useability of user interface.
 
 
